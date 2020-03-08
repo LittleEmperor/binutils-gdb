@@ -1,0 +1,32 @@
+From 0f308164703b19dbbf1a582ce152ab7b0f78b97a Mon Sep 17 00:00:00 2001
+From: "H.J. Lu" <hjl.tools@gmail.com>
+Date: Fri, 6 Mar 2020 08:42:35 -0800
+Subject: [PATCH] plugin: Pass -flto-partition=none to GCC
+
+Without -flto-partition=none, GCC may generate more than one real object
+from a single LTO IR object while plugin expects only one object with
+real symbols.
+
+	PR binutils/25640
+	* plugin.c (setup_lto_wrapper_env): Pass -flto-partition=none to
+	GCC.
+---
+ bfd/plugin.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bfd/plugin.c b/bfd/plugin.c
+index a0f172d363..b9b2c3794d 100644
+--- a/bfd/plugin.c
++++ b/bfd/plugin.c
+@@ -317,7 +317,7 @@ static int
+ setup_lto_wrapper_env (struct plugin_list_entry *plugin)
+ {
+   return (putenv (plugin->gcc_env)
+-	  || putenv ("COLLECT_GCC_OPTIONS="));
++	  || putenv ("COLLECT_GCC_OPTIONS=-flto-partition=none"));
+ }
+ 
+ static struct plugin_list_entry *plugin_list = NULL;
+-- 
+2.24.1
+
