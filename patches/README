@@ -33,6 +33,13 @@ patches="
 0002-Add-test-for-nm-on-mixed-LTO-non-LTO-object.patch
 0003-Don-t-check-the-plugin-target-twice.patch
 0001-plugin-Pass-flto-partition-none-to-GCC.patch
+0001-ELF-Don-t-require-section-header-on-ELF-objects.patch
+0002-bfd-Reconstruct-dynamic-symbol-table-from-PT_DYNAMIC.patch
+0003-readelf-Compute-dynamic-symbol-table-size-from-hash-.patch
+0004-ld-Add-a-simple-test-for-z-nosectionheader.patch
+0005-binutils-Add-remove-section-header-tests.patch
+0006-ld-Add-tests-for-z-nosectionheader-and-remove-sectio.patch
+0007-ld-Add-z-nosectionheader-test-to-bootstrap.exp.patch
 	binutils-pr12639.patch
 0001-Add-STB_SECONDARY-support.patch
 0001-x86-64-Add-R_X86_64_THUNK_GOTPCRELX.patch

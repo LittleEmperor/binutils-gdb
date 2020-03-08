@@ -1,0 +1,35 @@
+From 0663f7cd7ea25bc7ad554810d449241b61dcd0af Mon Sep 17 00:00:00 2001
+From: Kaylee Blake <klkblake@gmail.com>
+Date: Thu, 5 Mar 2020 13:42:31 +1030
+Subject: [PATCH 4/7] ld: Add a simple test for -z nosectionheader
+
+2020-03-XX  Kaylee Blake  <klkblake@gmail.com>
+
+	PR ld/25617
+	* testsuite/ld-elf/nosectionheader.d: New file.
+---
+ ld/testsuite/ld-elf/nosectionheader.d | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+ create mode 100644 ld/testsuite/ld-elf/nosectionheader.d
+
+diff --git a/ld/testsuite/ld-elf/nosectionheader.d b/ld/testsuite/ld-elf/nosectionheader.d
+new file mode 100644
+index 0000000000..7154e095e1
+--- /dev/null
++++ b/ld/testsuite/ld-elf/nosectionheader.d
+@@ -0,0 +1,12 @@
++#source: start.s
++#ld: -z nosectionheader
++#readelf: -h -S
++
++#...
++  Start of section headers:[ \t]+0 \(bytes into file\)
++#...
++  Size of section headers:[ \t]+0 \(bytes\)
++  Number of section headers:[ \t]+0
++  Section header string table index:[ \t]+0
++
++There are no sections in this file.
+-- 
+2.24.1
+

@@ -1,0 +1,66 @@
+From 762fa6bcfae2f397207938a0138f1b3ddeda20e8 Mon Sep 17 00:00:00 2001
+From: "H.J. Lu" <hjl.tools@gmail.com>
+Date: Sat, 7 Mar 2020 05:27:12 -0800
+Subject: [PATCH 5/7] binutils: Add --remove-section-header tests
+
+Verify --remove-section-header with objcopy and strip is ignored for
+relocatable file.
+
+	PR ld/25617
+	* testsuite/binutils-all/objcopy.exp: Verify
+	--remove-section-header ignored for relocatable file.
+	* testsuite/binutils-all/remove-header-1.d: New file.
+---
+ binutils/testsuite/binutils-all/objcopy.exp       | 13 +++++++++++++
+ binutils/testsuite/binutils-all/remove-header-1.d |  8 ++++++++
+ 2 files changed, 21 insertions(+)
+ create mode 100644 binutils/testsuite/binutils-all/remove-header-1.d
+
+diff --git a/binutils/testsuite/binutils-all/objcopy.exp b/binutils/testsuite/binutils-all/objcopy.exp
+index 549b064e96..11bb8fea84 100644
+--- a/binutils/testsuite/binutils-all/objcopy.exp
++++ b/binutils/testsuite/binutils-all/objcopy.exp
+@@ -1115,6 +1115,13 @@ if [is_elf_format] {
+ 	run_dump_test "note-6-32"
+     }
+     run_dump_test "note-5"
++
++    set saved_OBJCOPYFLAGS $OBJCOPYFLAGS
++    append OBJCOPYFLAGS " --remove-section-header"
++
++    objcopy_test "simple copy with --remove-section-header" bintest.s
++
++    set OBJCOPYFLAGS $saved_OBJCOPYFLAGS
+ }
+ 
+ run_dump_test "copy-2"
+@@ -1231,6 +1238,12 @@ if [is_elf_format] {
+         verbose [file rootname $t]
+         run_dump_test [file rootname $t]
+     }
++
++    # Test --remove-section-header
++    run_dump_test "remove-header-1" \
++			[list \
++			  [list source strip-15${reloc_format}.s] \
++			  [list as "${elf64} --defsym RELOC=${reloc}"]]
+ }
+ run_dump_test "localize-hidden-2"
+ 
+diff --git a/binutils/testsuite/binutils-all/remove-header-1.d b/binutils/testsuite/binutils-all/remove-header-1.d
+new file mode 100644
+index 0000000000..60a9c407af
+--- /dev/null
++++ b/binutils/testsuite/binutils-all/remove-header-1.d
+@@ -0,0 +1,8 @@
++#PROG: strip
++#strip: -g --remove-section-header
++#readelf: -r
++
++Relocation section '\.rela?\.text' at offset .* contains 2 entries:
++ *Offset * Info * Type * Sym\. *Value * Sym\. *Name(?: * \+ * Addend)?
++0+00 * 0+0(?:1|b|32|103) * R_[^ ]* *(?: * 55aa)?
++#pass
+-- 
+2.24.1
+
